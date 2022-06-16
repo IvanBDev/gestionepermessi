@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -31,7 +32,8 @@ public class Messaggio {
 	@Column(name = "dataLettura")
 	private Date dataLettura;
 	
-	@OneToOne(mappedBy = "messaggio", fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "richiestaPermesso_id", referencedColumnName = "id")
 	private RichiestaPermesso richiestaPermesso;
 
 	public Messaggio(Long id, String testo, String oggetto, boolean letto, Date dataInserimento, Date dataLettura,

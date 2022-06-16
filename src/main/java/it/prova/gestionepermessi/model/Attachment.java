@@ -2,29 +2,27 @@ package it.prova.gestionepermessi.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "attachment")
 public class Attachment {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
+
+	@Column(name = "nomeFile")
 	private String nomeFile;
+
+	@Column(name = "contentType")
 	private String contentType;
-	
-	@OneToOne(mappedBy = "attachment", fetch = FetchType.LAZY)
-	private RichiestaPermesso richiestaPermesso;
-	
+
 	@Lob
 	private byte[] payload;
 
@@ -32,21 +30,18 @@ public class Attachment {
 		super();
 	}
 
-	public Attachment(Long id, String nomeFile, String contentType, RichiestaPermesso richiestaPermesso,
-			byte[] payload) {
+	public Attachment(Long id, String nomeFile, String contentType, byte[] payload) {
 		super();
 		this.id = id;
 		this.nomeFile = nomeFile;
 		this.contentType = contentType;
-		this.richiestaPermesso = richiestaPermesso;
 		this.payload = payload;
 	}
 
-	public Attachment(String nomeFile, String contentType, RichiestaPermesso richiestaPermesso, byte[] payload) {
+	public Attachment(String nomeFile, String contentType, byte[] payload) {
 		super();
 		this.nomeFile = nomeFile;
 		this.contentType = contentType;
-		this.richiestaPermesso = richiestaPermesso;
 		this.payload = payload;
 	}
 
@@ -74,14 +69,6 @@ public class Attachment {
 		this.contentType = contentType;
 	}
 
-	public RichiestaPermesso getRichiestaPermesso() {
-		return richiestaPermesso;
-	}
-
-	public void setRichiestaPermesso(RichiestaPermesso richiestaPermesso) {
-		this.richiestaPermesso = richiestaPermesso;
-	}
-
 	public byte[] getPayload() {
 		return payload;
 	}
@@ -89,7 +76,5 @@ public class Attachment {
 	public void setPayload(byte[] payload) {
 		this.payload = payload;
 	}
-	
-	
-	
+
 }

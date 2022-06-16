@@ -45,15 +45,27 @@ public class Dipendente {
 	@Enumerated(EnumType.STRING)
 	private Sesso sesso;
 	
-	@OneToOne(mappedBy = "dipendente", fetch = FetchType.LAZY)
-	@JoinColumn(name = "utente_id", nullable = false)
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "utente_id", referencedColumnName = "id")
 	private Utente utente;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dipendente")
 	private Set<RichiestaPermesso> richiestaPermessi = new HashSet<RichiestaPermesso>(0);
 
 	public Dipendente() {
 		super();
+	}
+
+	public Dipendente(String nome, String cognome, String codiceFiscale, String email, Date dataNascita,
+			Date dataAssunzione, Sesso sesso) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.email = email;
+		this.dataNascita = dataNascita;
+		this.dataAssunzione = dataAssunzione;
+		this.sesso = sesso;
 	}
 
 	public Dipendente(String nome, String cognome, String codiceFiscale, Date dataNascita, Date dataAssunzione,
@@ -62,6 +74,20 @@ public class Dipendente {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
+		this.dataNascita = dataNascita;
+		this.dataAssunzione = dataAssunzione;
+		this.sesso = sesso;
+		this.utente = utente;
+	}
+
+	public Dipendente(Long id, String nome, String cognome, String codiceFiscale, String email, Date dataNascita,
+			Date dataAssunzione, Sesso sesso, Utente utente) {
+		super();
+		Id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.email = email;
 		this.dataNascita = dataNascita;
 		this.dataAssunzione = dataAssunzione;
 		this.sesso = sesso;
