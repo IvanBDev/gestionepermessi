@@ -12,10 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import it.prova.gestionepermessi.dto.DipendenteDTO;
 import it.prova.gestionepermessi.dto.UtenteDTO;
 import it.prova.gestionepermessi.model.Utente;
 import it.prova.gestionepermessi.repository.UtenteRepository;
-
 
 @Component
 public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
@@ -26,12 +26,15 @@ public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuc
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		
-		//voglio mettere in sessione uno userInfo perché spring security mette solo un principal da cui attingere username
-		Utente utenteFromDb = utenteRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Username " + authentication.getName() + " not found"));
-		UtenteDTO utenteParziale = new UtenteDTO();
-		utenteParziale.setUsername(utenteFromDb.getUsername());
-		request.getSession().setAttribute("userInfo", utenteParziale);
+
+		// voglio mettere in sessione uno userInfo perché spring security mette solo un
+		// principal da cui attingere username
+		Utente utenteFromDb = utenteRepository.findByUsername(authentication.getName()).orElseThrow(
+				() -> new UsernameNotFoundException("Username " + authentication.getName() + " not found"));
+		DipendenteDTO dipendenteParziale = new DipendenteDTO();
+		dipendenteParziale.setNome(utenteFromDb.getDipendente().getNome());
+		dipendenteParziale.setCognome(utenteFromDb.getDipendente().getCognome());
+		request.getSession().setAttribute("userInfo", dipendenteParziale);
 		response.sendRedirect("home");
 
 	}

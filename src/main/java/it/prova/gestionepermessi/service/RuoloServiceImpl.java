@@ -1,5 +1,7 @@
 package it.prova.gestionepermessi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,13 @@ public class RuoloServiceImpl implements RuoloService{
 	public void inserisciNuovo(Ruolo ruoloInstance) {
 		// TODO Auto-generated method stub
 		repository.save(ruoloInstance);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Ruolo> listAll() {
+		// TODO Auto-generated method stub
+		return (List<Ruolo>) repository.findAll();
 	}
 
 }

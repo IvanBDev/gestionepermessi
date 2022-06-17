@@ -1,4 +1,4 @@
- package it.prova.gestionepermessi.dto;
+package it.prova.gestionepermessi.dto;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -136,7 +136,7 @@ public class UtenteDTO {
 
 		return result;
 	}
-	
+
 	public static List<UtenteDTO> createUtenteDTOListFromModelList(List<Utente> modelListInput) {
 		return modelListInput.stream().map(utenteEntity -> {
 			return UtenteDTO.buildUtenteDTOFromModel(utenteEntity);

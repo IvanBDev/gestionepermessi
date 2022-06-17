@@ -24,7 +24,7 @@ public class Dipendente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 	
 	@Column(name = "nome")
 	private String nome;
@@ -83,7 +83,7 @@ public class Dipendente {
 	public Dipendente(Long id, String nome, String cognome, String codiceFiscale, String email, Date dataNascita,
 			Date dataAssunzione, Sesso sesso, Utente utente) {
 		super();
-		Id = id;
+		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
@@ -95,11 +95,11 @@ public class Dipendente {
 	}
 
 	public Long getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getNome() {

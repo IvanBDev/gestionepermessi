@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
@@ -7,7 +8,7 @@
 		<!-- Custom styles per le features di bootstrap 'Columns with icons' -->
 	   <link href="${pageContext.request.contextPath}/assets/css/features.css" rel="stylesheet">
 	   
-	   <title>Raccolta Film</title>
+	   <title>Gestione Permessi</title>
 	 </head>
 	   <body class="d-flex flex-column h-100">
 	   		
@@ -49,16 +50,20 @@
 				</div>
 			    
 			     <div class="p-5 mb-4 bg-light rounded-3">
+			     	<sec:authorize access="isAuthenticated() && hasRole('ADMIN')">
 				      <div class="container-fluid py-5">
-				        <h1 class="display-5 fw-bold">Benvenuto alla Raccolta Film</h1>
+				        <h1 class="display-5 fw-bold">Benvenuto alla Gestione dei permessi</h1>
 				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
-				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/regista/search">Vai a Ricerca</a>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/utente/search">Gestione Utenze</a>
+				 		<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/dipendente/search">Ricerca Dipendenti</a>
 				      </div>
+					</sec:authorize>
 			    </div>
 			    
 			  </div>
 			  
 			  <!--  features di bootstrap 'Columns with icons'  -->
+			 <sec:authorize access="isAuthenticated() && hasRole('BO_USER') || hasRole('DIPENDENTE_USER')">
 			  <div class="container px-4 py-5" id="featured-3">
 			    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
 			      <div class="feature col">
@@ -96,6 +101,7 @@
 			      </div>
 			    </div>
 			  </div>
+			 </sec:authorize>
 			  
 			</main>
 			

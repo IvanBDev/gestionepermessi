@@ -1,68 +1,64 @@
 package it.prova.gestionepermessi.dto;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import it.prova.gestionepermessi.model.Dipendente;
-import it.prova.gestionepermessi.model.RichiestaPermesso;
 import it.prova.gestionepermessi.model.Sesso;
-import it.prova.gestionepermessi.model.Utente;
 
 public class DipendenteDTO {
 
+	// TODO
 	private Long id;
-
-	@NotBlank(message = "{nome.notBlank}")
-	@Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
+	@NotBlank(message = "{nome.notblank}")
 	private String nome;
-
-	@NotBlank(message = "{cognome.notBlank}")
-	@Size(min = 3, max = 25, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
+	@NotBlank(message = "{cognome.notblank}")
 	private String cognome;
-
-	@NotBlank(message = "{codiceFiscale.notBlank}")
-	@Size(min = 16, max = 16, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
+	@NotBlank(message = "{codiceFiscale.notblank}")
+	@Size(min = 16, max = 16, message = "Errore, la lunghezza del codice fiscale deve essere di 16")
 	private String codiceFiscale;
-
+	@NotBlank(message = "{email.notblank}")
 	private String email;
+	@NotBlank(message = "{dataNascita.notblank}")
 	private Date dataNascita;
 	private Date dataAssunzione;
-	private Date dataDimissione;
 	private Sesso sesso;
+
+	private Long[] richiestePermessiIds;
+
 	private UtenteDTO utenteDTO;
-	private Long[] richiestaPermessiIds;
 
 	public DipendenteDTO() {
 		super();
 	}
 
-	public DipendenteDTO(Long id,
-			@NotBlank(message = "{nome.notBlank}") @Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String nome,
-			@NotBlank(message = "{cognome.notBlank}") @Size(min = 3, max = 25, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String cognome,
-			@NotBlank(message = "{codiceFiscale.notBlank}") @Size(min = 1, max = 16, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String codiceFiscale,
-			@NotNull String email, @NotNull Date dataNascita, @NotNull Date dataAssunzione) {
+	public DipendenteDTO(@NotBlank(message = "{nome.notblank}") String nome,
+			@NotBlank(message = "{cognome.notblank}") String cognome,
+			@NotBlank(message = "{codiceFiscale.notblank}") String codiceFiscale,
+			@NotBlank(message = "{email.notblank}") String email,
+			@NotBlank(message = "{dataNascita.notblank}") Date dataNascita, Date dataAssunzione, Sesso sesso,
+			UtenteDTO utenteDTO) {
 		super();
-		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
 		this.email = email;
 		this.dataNascita = dataNascita;
 		this.dataAssunzione = dataAssunzione;
+		this.sesso = sesso;
+		this.utenteDTO = utenteDTO;
 	}
 
-	public DipendenteDTO(Long id,
-			@NotBlank(message = "{nome.notBlank}") @Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String nome,
-			@NotBlank(message = "{cognome.notBlank}") @Size(min = 3, max = 25, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String cognome,
-			@NotBlank(message = "{codiceFiscale.notBlank}") @Size(min = 1, max = 16, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String codiceFiscale,
-			@NotNull String email, @NotNull Date dataNascita, @NotNull Date dataAssunzione, @NotNull Sesso sesso,
-			@NotNull UtenteDTO utenteDTO) {
+	public DipendenteDTO(Long id, @NotBlank(message = "{nome.notblank}") String nome,
+			@NotBlank(message = "{cognome.notblank}") String cognome,
+			@NotBlank(message = "{codiceFiscale.notblank}") String codiceFiscale,
+			@NotBlank(message = "{email.notblank}") String email,
+			@NotBlank(message = "{dataNascita.notblank}") Date dataNascita, Date dataAssunzione, Sesso sesso,
+			UtenteDTO utenteDTO) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -73,6 +69,19 @@ public class DipendenteDTO {
 		this.dataAssunzione = dataAssunzione;
 		this.sesso = sesso;
 		this.utenteDTO = utenteDTO;
+	}
+
+	public DipendenteDTO(Long id, String nome, String cognome, String codiceFiscale, String email, Date dataNascita,
+			Date dataAssunzione, Sesso sesso) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.email = email;
+		this.dataNascita = dataNascita;
+		this.dataAssunzione = dataAssunzione;
+		this.sesso = sesso;
 	}
 
 	public Long getId() {
@@ -131,20 +140,20 @@ public class DipendenteDTO {
 		this.dataAssunzione = dataAssunzione;
 	}
 
-	public Date getDataDimissione() {
-		return dataDimissione;
-	}
-
-	public void setDataDimissione(Date dataDimissione) {
-		this.dataDimissione = dataDimissione;
-	}
-
 	public Sesso getSesso() {
 		return sesso;
 	}
 
 	public void setSesso(Sesso sesso) {
 		this.sesso = sesso;
+	}
+
+	public Long[] getRichiestePermessiIds() {
+		return richiestePermessiIds;
+	}
+
+	public void setRichiestePermessiIds(Long[] richiestePermessiIds) {
+		this.richiestePermessiIds = richiestePermessiIds;
 	}
 
 	public UtenteDTO getUtenteDTO() {
@@ -155,46 +164,25 @@ public class DipendenteDTO {
 		this.utenteDTO = utenteDTO;
 	}
 
-	public Long[] getRichiestaPermessiIds() {
-		return richiestaPermessiIds;
+	public Dipendente buildModelFromDTO() {
+		return null;
 	}
 
-	public void setRichiestaPermessiIds(Long[] richiestaPermessiIds) {
-		this.richiestaPermessiIds = richiestaPermessiIds;
+	public static DipendenteDTO buildDipendenteDTOFromModel(Dipendente dipendenteModel) {
+		DipendenteDTO result = new DipendenteDTO(dipendenteModel.getId(), dipendenteModel.getNome(),
+				dipendenteModel.getCognome(), dipendenteModel.getCodiceFiscale(), dipendenteModel.getEmail(),
+				dipendenteModel.getDataNascita(), dipendenteModel.getDataAssunzione(), dipendenteModel.getSesso());
+
+		if (!dipendenteModel.getRichiestaPermessi().isEmpty())
+			result.richiestePermessiIds = dipendenteModel.getRichiestaPermessi().stream().map(r -> r.getId())
+					.collect(Collectors.toList()).toArray(new Long[] {});
+
+		return result;
 	}
 
-//	public Dipendente buildDipendenteModel(boolean includeRichiestaPermesso) {
-//
-//		Dipendente result = new Dipendente(this.id, this.nome, this.cognome, this.codiceFiscale, this.email,
-//				this.dataNascita, this.dataAssunzione, this.sesso, this.utente);
-//
-//		if (includeRichiestaPermesso && richiestaPermessiIds != null)
-//			result.setRichiestaPermessi(Arrays.asList(richiestaPermessiIds).stream()
-//					.map(id -> new RichiestaPermesso(id)).collect(Collectors.toSet()));
-//
-//		return result;
-//
-//	}
-//
-//	public static DipendenteDTO buildDipendenteDTOFromModel(Dipendente dipendenteModel) {
-//
-//		DipendenteDTO result = new DipendenteDTO(dipendenteModel.getId(), dipendenteModel.getNome(),
-//				dipendenteModel.getCognome(), dipendenteModel.getCodiceFiscale(), dipendenteModel.getEmail(),
-//				dipendenteModel.getDataNascita(), dipendenteModel.getDataAssunzione(), dipendenteModel.getSesso(),
-//				dipendenteModel.getUtente());
-//
-//		if (!dipendenteModel.getRichiestaPermessi().isEmpty())
-//			result.richiestaPermessiIds = dipendenteModel.getRichiestaPermessi().stream().map(r -> r.getId())
-//					.collect(Collectors.toList()).toArray(new Long[] {});
-//
-//		return result;
-//		
-//	}
-//	
-//	public static List<DipendenteDTO> createDipendenteDDTOListFromModelList(List<Dipendente> modelListInput) {
-//		return modelListInput.stream().map(utenteEntity -> {
-//			return DipendenteDTO.buildDipendenteDTOFromModel(utenteEntity);
-//		}).collect(Collectors.toList());
-//	}
 
-}
+	public static List<DipendenteDTO> createDipendenteDTOListFromModelList(List<Dipendente> modelListInput) {
+		return modelListInput.stream().map(dipendenteEntity -> {
+			return DipendenteDTO.buildDipendenteDTOFromModel(dipendenteEntity);
+		}).collect(Collectors.toList());
+	}}
