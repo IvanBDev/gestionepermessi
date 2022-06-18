@@ -49,6 +49,11 @@ public class Utente {
 		super();
 	}
 
+	public Utente(@NotNull Dipendente dipendente) {
+		super();
+		this.dipendente = dipendente;
+	}
+
 	public Utente(String username, String password) {
 		super();
 		this.username = username;

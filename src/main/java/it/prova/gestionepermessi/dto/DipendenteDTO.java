@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import it.prova.gestionepermessi.model.Dipendente;
@@ -21,11 +22,13 @@ public class DipendenteDTO {
 	@NotBlank(message = "{codiceFiscale.notblank}")
 	@Size(min = 16, max = 16, message = "Errore, la lunghezza del codice fiscale deve essere di 16")
 	private String codiceFiscale;
-	@NotBlank(message = "{email.notblank}")
 	private String email;
-	@NotBlank(message = "{dataNascita.notblank}")
+	@NotNull(message = "{dataNascita.notnull}")
 	private Date dataNascita;
+	@NotNull(message = "{dataAssunzione.notnull}")
 	private Date dataAssunzione;
+	private Date dataDimissioni;
+	@NotNull(message = "{sesso.notblank}")
 	private Sesso sesso;
 
 	private Long[] richiestePermessiIds;
@@ -51,6 +54,26 @@ public class DipendenteDTO {
 		this.dataAssunzione = dataAssunzione;
 		this.sesso = sesso;
 		this.utenteDTO = utenteDTO;
+	}
+	
+	
+
+	public DipendenteDTO(Long id, @NotBlank(message = "{nome.notblank}") String nome,
+			@NotBlank(message = "{cognome.notblank}") String cognome,
+			@NotBlank(message = "{codiceFiscale.notblank}") @Size(min = 16, max = 16, message = "Errore, la lunghezza del codice fiscale deve essere di 16") String codiceFiscale,
+			String email, @NotNull(message = "{dataNascita.notnull}") Date dataNascita,
+			@NotNull(message = "{dataAssunzione.notnull}") Date dataAssunzione, Date dataDimissioni,
+			@NotNull(message = "{sesso.notblank}") Sesso sesso) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.email = email;
+		this.dataNascita = dataNascita;
+		this.dataAssunzione = dataAssunzione;
+		this.dataDimissioni = dataDimissioni;
+		this.sesso = sesso;
 	}
 
 	public DipendenteDTO(Long id, @NotBlank(message = "{nome.notblank}") String nome,
@@ -164,14 +187,31 @@ public class DipendenteDTO {
 		this.utenteDTO = utenteDTO;
 	}
 
+	public Date getDataDimissioni() {
+		return dataDimissioni;
+	}
+
+	public void setDataDimissioni(Date dataDimissioni) {
+		this.dataDimissioni = dataDimissioni;
+	}
+
 	public Dipendente buildModelFromDTO() {
-		return null;
+		Dipendente model = new Dipendente(this.nome,this.cognome,this.codiceFiscale, this.dataNascita, this.dataAssunzione, this.sesso);
+
+		model.setId(this.id);
+		model.setDataDimissioni(this.dataDimissioni);
+		
+		//setto l email con le specifiche
+		String email = this.getNome().substring(0, 1) + "."+ this.getCognome()+ "@prova.it";
+		model.setEmail(email);
+
+		return model;
 	}
 
 	public static DipendenteDTO buildDipendenteDTOFromModel(Dipendente dipendenteModel) {
 		DipendenteDTO result = new DipendenteDTO(dipendenteModel.getId(), dipendenteModel.getNome(),
 				dipendenteModel.getCognome(), dipendenteModel.getCodiceFiscale(), dipendenteModel.getEmail(),
-				dipendenteModel.getDataNascita(), dipendenteModel.getDataAssunzione(), dipendenteModel.getSesso());
+				dipendenteModel.getDataNascita(), dipendenteModel.getDataAssunzione(), dipendenteModel.getDataDimissioni(), dipendenteModel.getSesso());
 
 		if (!dipendenteModel.getRichiestaPermessi().isEmpty())
 			result.richiestePermessiIds = dipendenteModel.getRichiestaPermessi().stream().map(r -> r.getId())
@@ -185,4 +225,7 @@ public class DipendenteDTO {
 		return modelListInput.stream().map(dipendenteEntity -> {
 			return DipendenteDTO.buildDipendenteDTOFromModel(dipendenteEntity);
 		}).collect(Collectors.toList());
-	}}
+	}
+	
+}
+

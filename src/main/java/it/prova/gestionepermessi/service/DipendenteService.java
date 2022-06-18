@@ -12,6 +12,14 @@ public interface DipendenteService {
 	
 	public Dipendente caricaSingoloDipendente(Long id);
 	
+	public Dipendente caricaSingoloDipendenteEagerConUtente(Long id);
+	
 	public Page<Dipendente> findByExample(Dipendente example, Integer pageNo, Integer pageSize, String sortBy);
+	
+	public void inserisciNuovo(Dipendente dipendente);
+	
+	public void aggiornaDipendente(Dipendente dipendente);
+	
+	public void costruzioneEInserimentoDiDipendenteEUtente(Dipendente dipendenteinstance);
 	
 }

@@ -1,6 +1,7 @@
 package it.prova.gestionepermessi.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
@@ -16,13 +17,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.gestionepermessi.model.Dipendente;
+import it.prova.gestionepermessi.model.StatoUtente;
+import it.prova.gestionepermessi.model.Utente;
 import it.prova.gestionepermessi.repository.DipendenteRepository;
+import it.prova.gestionepermessi.repository.UtenteRepository;
 
 @Service
 public class DipendenteServiceimpl implements DipendenteService{
 	
 	@Autowired
 	public DipendenteRepository dipendenteRepository;
+	
+	@Autowired
+	public UtenteRepository utenteRepository;
+	
+	@Autowired
+	public RuoloService ruoloService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -32,6 +42,7 @@ public class DipendenteServiceimpl implements DipendenteService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Dipendente> findByExample(Dipendente example, Integer pageNo, Integer pageSize, String sortBy) {
 		// TODO Auto-generated method stub
 		Specification<Dipendente> specificationCriteria = (root, query, cb) -> {
@@ -82,9 +93,63 @@ public class DipendenteServiceimpl implements DipendenteService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Dipendente caricaSingoloDipendente(Long id) {
 		// TODO Auto-generated method stub
 		return dipendenteRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void inserisciNuovo(Dipendente dipendenteInstance) {
+		// TODO Auto-generated method stub
+		dipendenteRepository.save(dipendenteInstance);
+	}
+
+	@Override
+	@Transactional
+	public void costruzioneEInserimentoDiDipendenteEUtente(Dipendente dipendenteinstance) {
+		// TODO Auto-generated method stub
+		dipendenteinstance.setUtente(creazioneUtenza(dipendenteinstance));
+		
+		utenteRepository.save(dipendenteinstance.getUtente());
+		dipendenteRepository.save(dipendenteinstance);
+	}
+	
+	@Transactional
+	private Utente creazioneUtenza(Dipendente dipendenteInstance) {
+		
+		Utente nuovaUtenza = new Utente(dipendenteInstance);
+		
+		nuovaUtenza.setUsername(dipendenteInstance.getNome().substring(0, 1) +"."+ dipendenteInstance.getCognome());
+		nuovaUtenza.setPassword("Password@01");
+		nuovaUtenza.setStato(StatoUtente.CREATO);
+		nuovaUtenza.getRuoli().add(ruoloService.cercaPerDescrizioneECodice("Dipendente", "ROLE_DIPENDENTE_USER"));
+		nuovaUtenza.setDateCreated(new Date());
+		
+		return nuovaUtenza;
+		
+	}
+
+	@Override
+	@Transactional
+	public void aggiornaDipendente(Dipendente dipendenteInstance) {
+		// TODO Auto-generated method stub
+		Dipendente dipendenteDb = caricaSingoloDipendenteEagerConUtente(dipendenteInstance.getId());
+		
+		dipendenteInstance.setUtente(dipendenteDb.getUtente());
+		dipendenteInstance.getUtente().setUsername(dipendenteInstance.getNome().substring(0, 1) +"."+ dipendenteInstance.getCognome());
+		
+		utenteRepository.save(dipendenteInstance.getUtente());
+		dipendenteRepository.save(dipendenteInstance);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Dipendente caricaSingoloDipendenteEagerConUtente(Long id) {
+		// TODO Auto-generated method stub
+		return dipendenteRepository.findDipendenteEagerWithUtente(id);
 	}
 
 }

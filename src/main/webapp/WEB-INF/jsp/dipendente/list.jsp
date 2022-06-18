@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html lang="it" class="h-100">
 <head>
@@ -31,9 +33,14 @@
 			        <h5>Lista dei risultati</h5> 
 			    </div>
 			    <div class='card-body'>
-			    	<a href="${pageContext.request.contextPath}/dipendente/search" class='btn btn-outline-primary' >
+			    	<a href="${pageContext.request.contextPath}/dipendente/search" class='btn btn-outline-secondary' >
 				            <i class='fa fa-chevron-left'></i> Torna alla Ricerca
 				        </a>
+				        <sec:authorize access="isAuthenticated() && hasRole('BO_USER')">
+				        	<a href="${pageContext.request.contextPath}/dipendente/insert" class='btn btn-outline-primary' >
+				            	<i class='fa fa-chevron-left'></i> Nuovo Dipendente
+				        	</a>
+				        </sec:authorize>
 			    
 			        <div class='table-responsive'>
 			            <table class='table table-striped ' >
@@ -55,6 +62,11 @@
 										<td>${dipendenteItem.dataAssunzione}</td>
 										<td>
 											<a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/dipendente/show/${dipendenteItem.id}">Visualizza</a>
+											<sec:authorize access="isAuthenticated() && hasRole('BO_USER')">
+				        						<a href="${pageContext.request.contextPath}/dipendente/edit/${dipendenteItem.id}" class='btn btn-sm btn-outline-warning' >
+				            						<i class='fa fa-chevron-left'></i> Edit
+				        						</a>
+				        					</sec:authorize>
 										</td>
 									</tr>
 								</c:forEach>

@@ -58,6 +58,13 @@
 				 		<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/dipendente/search">Ricerca Dipendenti</a>
 				      </div>
 					</sec:authorize>
+					<sec:authorize access="isAuthenticated() && hasRole('BO_USER')">
+				      <div class="container-fluid py-5">
+				        <h1 class="display-5 fw-bold">Benvenuto alla Gestione dei permessi</h1>
+				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/dipendente/search">Gestione Dipendenti</a>
+				      </div>
+					</sec:authorize>
 			    </div>
 			    
 			  </div>
