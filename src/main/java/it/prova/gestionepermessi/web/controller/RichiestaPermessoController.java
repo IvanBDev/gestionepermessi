@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,11 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.gestionepermessi.dto.DipendenteDTO;
-import it.prova.gestionepermessi.dto.RicercaUtenteDTO;
 import it.prova.gestionepermessi.dto.RichiestaPermessoDTO;
 import it.prova.gestionepermessi.model.Dipendente;
 import it.prova.gestionepermessi.model.RichiestaPermesso;
-import it.prova.gestionepermessi.model.TipoPermesso;
 import it.prova.gestionepermessi.service.DipendenteService;
 import it.prova.gestionepermessi.service.RichiestaPermessoService;
 
@@ -111,6 +110,14 @@ public class RichiestaPermessoController {
 		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/richiestaPermesso/list";
+	}
+	
+	@GetMapping("/show/{idRichiestaPermesso}")
+	public String showUtente(@PathVariable(required = true) Long idRichiestaPermesso, Model model) {
+		
+		model.addAttribute("show_richiesta_attr", richiestaPermessoService.caricaSingoloTramiteId(idRichiestaPermesso));
+		
+		return "richiestaPermesso/show";
 	}
 
 }

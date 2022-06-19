@@ -106,6 +106,12 @@ public class RichiestaPermessoServiceImpl implements RichiestaPermessoService{
 		return richiestaPermessoRepository.findAll(specificationCriteria, paging);
 	}
 
+	@Override
+	public RichiestaPermesso caricaSingoloTramiteId(Long idRichiesta) {
+		// TODO Auto-generated method stub
+		return richiestaPermessoRepository.findById(idRichiesta).orElse(null);
+	}
+
 	
 
 }

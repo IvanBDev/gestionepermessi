@@ -16,4 +16,6 @@ public interface RichiestaPermessoService {
 	public Page<RichiestaPermesso> findByExample(RichiestaPermesso example, Integer pageNo, Integer pageSize,
 			String sortBy);
 	
+	public RichiestaPermesso caricaSingoloTramiteId(Long idRichiesta);
+	
 }

@@ -58,9 +58,9 @@
 										<td><fmt:formatDate type="date" value = "${richiestaPermessoItem.dataFine}" /></td>
 										<td>${richiestaPermessoItem.approvato?'APPROVATO':'NON APPROVATO' }</td>
 										<td>
-											<a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/richiestaPermesso/show${richiestaPermessoItem.id}">Visualizza</a>
-											<a class="btn btn-sm btn-outline-warning" href="${pageContext.request.contextPath}/richiestaPermesso/edit${richiestaPermessoItem.id}">Edit</a>
-											<a class="btn  btn-sm btn-outline-danger ml-2 mr-2" href="${pageContext.request.contextPath}/richiestaPermesso/delete${richiestaPermessoItem.id}">Delete</a>
+											<a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/richiestaPermesso/show/${richiestaPermessoItem.id}">Visualizza</a>
+											<a class="btn btn-sm btn-outline-warning" href="${pageContext.request.contextPath}/richiestaPermesso/edit/${richiestaPermessoItem.id}">Edit</a>
+											<a class="btn  btn-sm btn-outline-danger ml-2 mr-2" href="${pageContext.request.contextPath}/richiestaPermesso/delete/${richiestaPermessoItem.id}">Delete</a>
 										</td>
 									</tr>
 								</c:forEach>
