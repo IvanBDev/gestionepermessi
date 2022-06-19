@@ -31,8 +31,8 @@
 		        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
 		        <div class="dropdown-menu" aria-labelledby="dropdown01">
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/insert">Inserisci Dipendente</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/searchPermesso">Ricerca Permesso</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/gestioneMessaggi">Ricerca Permesso</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/richiestaPermesso/search">Ricerca Permesso</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/gestioneMessaggi">Gestione Messaggi</a>
 		        </div>
 		      </li>
 		   </sec:authorize>
@@ -46,7 +46,7 @@
       </sec:authorize>
       <sec:authorize access="isAuthenticated() && hasRole('BO_USER')">
 	      <div class="col-md-3 text-end">
-	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.Username})
+	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.username})
 	    	 <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 	      </div>
       </sec:authorize>

@@ -22,9 +22,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.gestionepermessi.dto.DipendenteDTO;
 import it.prova.gestionepermessi.dto.RichiestaPermessoDTO;
+import it.prova.gestionepermessi.model.Attachment;
 import it.prova.gestionepermessi.model.Dipendente;
+import it.prova.gestionepermessi.model.Messaggio;
 import it.prova.gestionepermessi.model.RichiestaPermesso;
+import it.prova.gestionepermessi.service.AttachmentService;
 import it.prova.gestionepermessi.service.DipendenteService;
+import it.prova.gestionepermessi.service.MessaggioService;
 import it.prova.gestionepermessi.service.RichiestaPermessoService;
 
 @Controller
@@ -36,6 +40,12 @@ public class RichiestaPermessoController {
 
 	@Autowired
 	private DipendenteService dipendenteService;
+	
+	@Autowired
+	private AttachmentService attachmentService;
+	
+	@Autowired
+	private MessaggioService messaggioService;
 	
 	@GetMapping("/list")
 	public ModelAndView listAllRichiestePermessi() {
@@ -113,11 +123,28 @@ public class RichiestaPermessoController {
 	}
 	
 	@GetMapping("/show/{idRichiestaPermesso}")
-	public String showUtente(@PathVariable(required = true) Long idRichiestaPermesso, Model model) {
+	public String show(@PathVariable(required = true) Long idRichiestaPermesso, Model model) {
 		
 		model.addAttribute("show_richiesta_attr", richiestaPermessoService.caricaSingoloTramiteId(idRichiestaPermesso));
 		
 		return "richiestaPermesso/show";
+	}
+	
+	@GetMapping("/delete/{idRichiestaPermesso}")
+	public String delete(@PathVariable(required = true) Long idRichiestaPermesso, Model model) {
+		
+		model.addAttribute("delete_richiesta_attr", richiestaPermessoService.caricaSingoloTramiteId(idRichiestaPermesso));
+		
+		return "richiestaPermesso/delete";
+	}
+	
+	@GetMapping("/remove/{idRichiestaPermesso}")
+	public String remove(@PathVariable(required = true) Long idRichiestaPermesso, RedirectAttributes redirectAttrs, Model model) {
+		
+		richiestaPermessoService.rimuoviTramiteId(idRichiestaPermesso);
+
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/richiestaPeresso/list";
 	}
 
 }

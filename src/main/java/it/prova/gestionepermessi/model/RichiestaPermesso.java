@@ -2,6 +2,7 @@ package it.prova.gestionepermessi.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -36,12 +37,12 @@ public class RichiestaPermesso {
 	@Column
 	public String note;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "dipendente_id", referencedColumnName = "id", nullable = false)
 	private Dipendente dipendente;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "attachment_id", referencedColumnName = "ID")
+	@JoinColumn(name = "attachment_id", referencedColumnName = "id")
 	private Attachment attachment;
 
 	public RichiestaPermesso() {

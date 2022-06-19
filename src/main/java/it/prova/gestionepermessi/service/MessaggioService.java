@@ -7,4 +7,8 @@ public interface MessaggioService {
 	
 	public void nuovoMessaggio(Messaggio messaggioInstance, RichiestaPermesso richiestaInstance);
 	
+	public Messaggio findByRichiestaPermesso_Id(Long idRichiesta);
+	
+	public void rimuoviMessaggio(Messaggio messaggio);
+	
 }

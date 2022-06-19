@@ -18,4 +18,8 @@ public interface RichiestaPermessoService {
 	
 	public RichiestaPermesso caricaSingoloTramiteId(Long idRichiesta);
 	
+	public void rimuoviTramiteId(Long idRichiesta);
+	
+	public RichiestaPermesso findByIdEager(Long idRichiesta);
+	
 }

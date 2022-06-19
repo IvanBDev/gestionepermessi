@@ -2,6 +2,8 @@ package it.prova.gestionepermessi.service;
 
 import java.util.Date;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class MessaggioServiceImpl implements MessaggioService {
 	private MessaggioRepository messaggioRepository;
 
 	@Override
+	@Transactional
 	public void nuovoMessaggio(Messaggio messaggioInstance, RichiestaPermesso richiestaInstance) {
 		// TODO Auto-generated method stub
 		String note = richiestaInstance.getNote().isBlank() ? ""
@@ -46,6 +49,20 @@ public class MessaggioServiceImpl implements MessaggioService {
 		messaggioInstance.setRichiestaPermesso(richiestaInstance);
 
 		messaggioRepository.save(messaggioInstance);
+	}
+
+	@Override
+	@Transactional
+	public Messaggio findByRichiestaPermesso_Id(Long idRichiesta) {
+		// TODO Auto-generated method stub
+		return messaggioRepository.findByRichiestaPermesso_id(idRichiesta);
+	}
+
+	@Override
+	@Transactional
+	public void rimuoviMessaggio(Messaggio messaggio) {
+		// TODO Auto-generated method stub
+		messaggioRepository.delete(messaggio);
 	}
 
 }

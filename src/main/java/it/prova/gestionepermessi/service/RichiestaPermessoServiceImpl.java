@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.prova.gestionepermessi.model.Attachment;
@@ -25,8 +25,8 @@ import it.prova.gestionepermessi.repository.AttachmentRepository;
 import it.prova.gestionepermessi.repository.RichiestaPermessoRepository;
 
 @Service
-public class RichiestaPermessoServiceImpl implements RichiestaPermessoService{
-	
+public class RichiestaPermessoServiceImpl implements RichiestaPermessoService {
+
 	@Autowired
 	private RichiestaPermessoRepository richiestaPermessoRepository;
 
@@ -72,6 +72,7 @@ public class RichiestaPermessoServiceImpl implements RichiestaPermessoService{
 	}
 
 	@Override
+	@Transactional
 	public Page<RichiestaPermesso> findByExample(RichiestaPermesso example, Integer pageNo, Integer pageSize,
 			String sortBy) {
 		// TODO Auto-generated method stub
@@ -80,19 +81,18 @@ public class RichiestaPermessoServiceImpl implements RichiestaPermessoService{
 			List<Predicate> predicates = new ArrayList<Predicate>();
 
 			if (StringUtils.isNotEmpty(example.getCodiceCertificato()))
-				predicates
-						.add(cb.like(cb.upper(root.get("codiceCertificato")), "%" + example.getCodiceCertificato().toUpperCase() + "%"));
-			
+				predicates.add(cb.like(cb.upper(root.get("codiceCertificato")),
+						"%" + example.getCodiceCertificato().toUpperCase() + "%"));
+
 			if (StringUtils.isNotEmpty(example.getNote()))
-				predicates
-						.add(cb.like(cb.upper(root.get("note")), "%" + example.getNote().toUpperCase() + "%"));
+				predicates.add(cb.like(cb.upper(root.get("note")), "%" + example.getNote().toUpperCase() + "%"));
 
 			if (example.getTipoPermesso() != null)
 				predicates.add(cb.equal(root.get("tipoPermesso"), example.getTipoPermesso()));
-			
-			if(example.getDipendente() != null)
+
+			if (example.getDipendente() != null)
 				predicates.add(root.join("dipendente").in(example.getDipendente()));
-			
+
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
 		};
 
@@ -112,6 +112,30 @@ public class RichiestaPermessoServiceImpl implements RichiestaPermessoService{
 		return richiestaPermessoRepository.findById(idRichiesta).orElse(null);
 	}
 
-	
+	@Override
+	public void rimuoviTramiteId(Long idRichiesta) {
+		// TODO Auto-generated method stub
+
+		RichiestaPermesso daEliminare = richiestaPermessoRepository.findByIdEager(idRichiesta);
+
+		for (RichiestaPermesso richiestaItem : daEliminare.getDipendente().getRichiestaPermessi()) {
+			if (richiestaItem.getId() == idRichiesta)
+				daEliminare.getDipendente().getRichiestaPermessi().remove(richiestaItem);
+		}
+
+		attachmentRepository.delete(daEliminare.getAttachment());
+
+		Messaggio messaggio = messaggioService.findByRichiestaPermesso_Id(idRichiesta);
+
+		messaggioService.rimuoviMessaggio(messaggio);
+
+		richiestaPermessoRepository.delete(daEliminare);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public RichiestaPermesso findByIdEager(Long id) {
+		return richiestaPermessoRepository.findByIdEager(id);
+	}
 
 }
