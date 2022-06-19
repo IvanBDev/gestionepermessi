@@ -213,9 +213,9 @@ public class DipendenteDTO {
 				dipendenteModel.getCognome(), dipendenteModel.getCodiceFiscale(), dipendenteModel.getEmail(),
 				dipendenteModel.getDataNascita(), dipendenteModel.getDataAssunzione(), dipendenteModel.getDataDimissioni(), dipendenteModel.getSesso());
 
-		if (!dipendenteModel.getRichiestaPermessi().isEmpty())
-			result.richiestePermessiIds = dipendenteModel.getRichiestaPermessi().stream().map(r -> r.getId())
-					.collect(Collectors.toList()).toArray(new Long[] {});
+//		if (!dipendenteModel.getRichiestaPermessi().isEmpty())
+//			result.richiestePermessiIds = dipendenteModel.getRichiestaPermessi().stream().map(r -> r.getId())
+//					.collect(Collectors.toList()).toArray(new Long[] {});
 
 		return result;
 	}

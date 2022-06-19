@@ -22,4 +22,6 @@ public interface DipendenteService {
 	
 	public void costruzioneEInserimentoDiDipendenteEUtente(Dipendente dipendenteinstance);
 	
+	public Dipendente caricaTramiteUsername(String username);
+	
 }

@@ -16,4 +16,7 @@ public interface DipendenteRepository extends CrudRepository<Dipendente, Long>, 
 	@Query("FROM Dipendente d LEFT JOIN FETCH d.utente u WHERE d.id = ?1")
 	public Dipendente findDipendenteEagerWithUtente(Long id);
 	
+	@Query("SELECT d FROM Dipendente d JOIN FETCH d.utente u WHERE u.username = ?1")
+	public Dipendente findByUsername(String username);
+	
 }

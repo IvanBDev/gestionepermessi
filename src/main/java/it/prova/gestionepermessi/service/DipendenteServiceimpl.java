@@ -152,4 +152,10 @@ public class DipendenteServiceimpl implements DipendenteService{
 		return dipendenteRepository.findDipendenteEagerWithUtente(id);
 	}
 
+	@Override
+	public Dipendente caricaTramiteUsername(String username) {
+		// TODO Auto-generated method stub
+		return dipendenteRepository.findByUsername(username);
+	}
+
 }

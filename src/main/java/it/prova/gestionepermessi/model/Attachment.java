@@ -2,10 +2,13 @@ package it.prova.gestionepermessi.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +28,10 @@ public class Attachment {
 
 	@Lob
 	private byte[] payload;
+	
+//	@OneToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "richiestaPermesso_id", referencedColumnName = "id", nullable = true)
+//	private RichiestaPermesso richiestaPermesso;
 
 	public Attachment() {
 		super();
@@ -76,5 +83,15 @@ public class Attachment {
 	public void setPayload(byte[] payload) {
 		this.payload = payload;
 	}
+
+//	public RichiestaPermesso getRichiestaPermesso() {
+//		return richiestaPermesso;
+//	}
+//
+//	public void setRichiestaPermesso(RichiestaPermesso richiestaPermesso) {
+//		this.richiestaPermesso = richiestaPermesso;
+//	}
+	
+	
 
 }

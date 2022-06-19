@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -23,21 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.prova.gestionepermessi.dto.DipendenteDTO;
 import it.prova.gestionepermessi.model.Dipendente;
 import it.prova.gestionepermessi.service.DipendenteService;
-import it.prova.gestionepermessi.service.RuoloService;
-import it.prova.gestionepermessi.service.UtenteService;
 
 @Controller
 @RequestMapping(value = "/dipendente")
 public class DipendenteController {
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private UtenteService utenteService;
-
-	@Autowired
-	private RuoloService ruoloService;
 
 	@Autowired
 	private DipendenteService dipendenteService;

@@ -23,7 +23,6 @@
 		        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestione Utenze</a>
 		        <div class="dropdown-menu" aria-labelledby="dropdown01">
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/search">Ricerca Utenti</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/insert">Inserisci Utente</a>
 		        </div>
 		      </li>
 		   </sec:authorize>
@@ -41,22 +40,22 @@
       </div>
       <sec:authorize access="isAuthenticated() && hasRole('ADMIN')">
 	      <div class="col-md-3 text-end">
-	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })
+	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.username })
 	    	 <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 	      </div>
       </sec:authorize>
       <sec:authorize access="isAuthenticated() && hasRole('BO_USER')">
 	      <div class="col-md-3 text-end">
-	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.nome } ${userInfo.cognome })
+	        <p class="navbar-text">Utente: <sec:authentication property="name"/> (${userInfo.Username})
 	    	 <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 	      </div>
       </sec:authorize>
-      <sec:authorize access="isAuthenticated() && hasRole('CLASSIC_USER')">
+      <sec:authorize access="isAuthenticated() && hasRole('DIPENDENTE_USER')">
 	      <div class="col-md-3 text-end">
 				<div class="collapse navbar-collapse" id="navbarsExample07">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">(${userInfo.nome } ${userInfo.cognome })</a>
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">(${userInfo.username})</a>
 							<ul class="dropdown-menu" aria-labelledby="dropdown01">
 								<li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a></li>
 								<li><a class="dropdown-item" href="${pageContext.request.contextPath}/cambiaPassword/resetform">Cambia Password</a></li>

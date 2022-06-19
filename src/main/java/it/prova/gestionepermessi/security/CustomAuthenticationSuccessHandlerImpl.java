@@ -31,10 +31,11 @@ public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuc
 		// principal da cui attingere username
 		Utente utenteFromDb = utenteRepository.findByUsername(authentication.getName()).orElseThrow(
 				() -> new UsernameNotFoundException("Username " + authentication.getName() + " not found"));
-		DipendenteDTO dipendenteParziale = new DipendenteDTO();
-		dipendenteParziale.setNome(utenteFromDb.getDipendente().getNome());
-		dipendenteParziale.setCognome(utenteFromDb.getDipendente().getCognome());
-		request.getSession().setAttribute("userInfo", dipendenteParziale);
+		UtenteDTO utenteParziale = new UtenteDTO();
+		utenteParziale.setId(utenteFromDb.getId());
+		utenteParziale.setUsername(utenteFromDb.getUsername());
+		utenteParziale.setDipendenteDTO(DipendenteDTO.buildDipendenteDTOFromModel(utenteFromDb.getDipendente()));
+		request.getSession().setAttribute("userInfo", utenteParziale);
 		response.sendRedirect("home");
 
 	}

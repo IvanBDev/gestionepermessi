@@ -27,6 +27,8 @@ public class UtenteDTO {
 	private String confermaPassword;
 	private Date dateCreated;
 	private StatoUtente stato;
+	
+	private DipendenteDTO dipendenteDTO;
 
 	private Long[] ruoliIds;
 
@@ -116,6 +118,14 @@ public class UtenteDTO {
 
 	public void setRuoliIds(Long[] ruoliIds) {
 		this.ruoliIds = ruoliIds;
+	}
+
+	public DipendenteDTO getDipendenteDTO() {
+		return dipendenteDTO;
+	}
+
+	public void setDipendenteDTO(DipendenteDTO dipendenteDTO) {
+		this.dipendenteDTO = dipendenteDTO;
 	}
 
 	public Utente buildUtenteModel(boolean includeIdRoles) {

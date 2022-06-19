@@ -65,6 +65,13 @@
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/dipendente/search">Gestione Dipendenti</a>
 				      </div>
 					</sec:authorize>
+					<sec:authorize access="isAuthenticated() && hasRole('DIPENDENTE_USER')">
+				      <div class="container-fluid py-5">
+				        <h1 class="display-5 fw-bold">Benvenuto!</h1>
+				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/richiestaPermesso/search">Ricerca Permesso</a>
+				      </div>
+					</sec:authorize>
 			    </div>
 			    
 			  </div>
@@ -77,12 +84,14 @@
 			        <div class="feature-icon bg-primary bg-gradient">
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"/></svg>
 			        </div>
-			        <h2>Ricerca Registi</h2>
-			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="${pageContext.request.contextPath}/regista/search" class="icon-link">
-			          Vai alla funzionalità
-			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
-			        </a>
+			        <h2>Inserisci Nuovo Permesso</h2>
+			        <sec:authorize access="isAuthenticated() && hasRole('DIPENDENTE_USER')">
+			        	<p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+			        	<a href="${pageContext.request.contextPath}/richiestaPermesso/insert" class="icon-link">
+			          		Vai alla funzionalità
+			          		<svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+			        	</a>
+			        </sec:authorize>
 			      </div>
 			      <div class="feature col">
 			        <div class="feature-icon bg-primary bg-gradient">
