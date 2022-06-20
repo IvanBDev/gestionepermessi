@@ -107,21 +107,24 @@ public class RichiestaPermessoServiceImpl implements RichiestaPermessoService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public RichiestaPermesso caricaSingoloTramiteId(Long idRichiesta) {
 		// TODO Auto-generated method stub
 		return richiestaPermessoRepository.findById(idRichiesta).orElse(null);
 	}
 
 	@Override
+	@Transactional
 	public void rimuoviTramiteId(Long idRichiesta) {
 		// TODO Auto-generated method stub
 
 		RichiestaPermesso daEliminare = richiestaPermessoRepository.findByIdEager(idRichiesta);
 
-		for (RichiestaPermesso richiestaItem : daEliminare.getDipendente().getRichiestaPermessi()) {
-			if (richiestaItem.getId() == idRichiesta)
-				daEliminare.getDipendente().getRichiestaPermessi().remove(richiestaItem);
-		}
+		System.out.println(daEliminare.getDipendente().getRichiestaPermessi());
+//		for (RichiestaPermesso richiestaItem : daEliminare.getDipendente().getRichiestaPermessi()) {
+//			if (richiestaItem.getId() == idRichiesta)
+//				daEliminare.getDipendente().getRichiestaPermessi().remove(richiestaItem);
+//		}
 
 		attachmentRepository.delete(daEliminare.getAttachment());
 

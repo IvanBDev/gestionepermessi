@@ -1,10 +1,19 @@
 package it.prova.gestionepermessi.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import it.prova.gestionepermessi.model.Messaggio;
@@ -45,7 +54,7 @@ public class MessaggioServiceImpl implements MessaggioService {
 				+ " al giorno " + richiestaInstance.getDataFine() + parteFinaleMessaggio);
 
 		messaggioInstance.setDataInserimento(new Date());
-		messaggioInstance.setLetto(true);
+		messaggioInstance.setLetto(false);
 		messaggioInstance.setRichiestaPermesso(richiestaInstance);
 
 		messaggioRepository.save(messaggioInstance);
@@ -63,6 +72,72 @@ public class MessaggioServiceImpl implements MessaggioService {
 	public void rimuoviMessaggio(Messaggio messaggio) {
 		// TODO Auto-generated method stub
 		messaggioRepository.delete(messaggio);
+	}
+
+	@Override
+	public Page<Messaggio> findByExample(Messaggio example, Integer pageNo, Integer pageSize, String sortBy) {
+		// TODO Auto-generated method stub
+		Specification<Messaggio> specificationCriteria = (root, query, cb) -> {
+
+			List<Predicate> predicates = new ArrayList<Predicate>();
+
+			// faccio fetch del dipendente e ruoli a prescindere
+			//root.fetch("dipendente", JoinType.INNER);
+			//root.fetch("richiestaPermesso", JoinType.LEFT);
+
+			if (StringUtils.isNotEmpty(example.getOggetto()))
+				predicates
+						.add(cb.like(cb.upper(root.get("oggetto")), "%" + example.getOggetto().toUpperCase() + "%"));
+
+			if (StringUtils.isNotEmpty(example.getTesto()))
+				predicates.add(cb.like(cb.upper(root.get("testo")), "%" + example.getTesto().toUpperCase() + "%"));
+			
+			if (example.getDataInserimento() != null)
+				predicates.add(cb.greaterThanOrEqualTo(root.get("dataInserimento"), example.getDataInserimento()));
+			
+			if (example.getDataLettura() != null)
+				predicates.add(cb.greaterThanOrEqualTo(root.get("dataLettura"), example.getDataLettura()));
+
+//			if (example.getRichiestaPermesso() != null && example.getRuoliIds().length > 0)
+//				predicates.add(root.join("ruoli").in(Arrays.asList(example.getRuoliIds()).stream()
+//						.map(id -> new Ruolo(id)).collect(Collectors.toSet())));
+
+			query.distinct(true);
+			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+		};
+
+		Pageable paging = null;
+		// se non passo parametri di paginazione non ne tengo conto
+		if (pageSize == null || pageSize < 10)
+			paging = Pageable.unpaged();
+		else
+			paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+		return messaggioRepository.findAll(specificationCriteria, paging);
+	}
+
+	@Override
+	public Messaggio caricaSingoloMessaggio(Long idMessaggio) {
+		// TODO Auto-generated method stub
+		return messaggioRepository.findById(idMessaggio).orElse(null);
+	}
+
+	@Override
+	public Messaggio aggiorna(Messaggio messaggio) {
+		// TODO Auto-generated method stub
+		return messaggioRepository.save(messaggio);
+	}
+
+	@Override
+	public List<Messaggio> findAllMessaggi() {
+		// TODO Auto-generated method stub
+		return (List<Messaggio>) messaggioRepository.findAll();
+	}
+
+	@Override
+	public List<Messaggio> findAllMessaggiNonLetti() {
+		// TODO Auto-generated method stub
+		return (List<Messaggio>) messaggioRepository.findAllMessaggiNonLetti();
 	}
 
 }

@@ -9,6 +9,26 @@
 	   <link href="${pageContext.request.contextPath}/assets/css/features.css" rel="stylesheet">
 	   
 	   <title>Gestione Permessi</title>
+	   
+	   <sec:authorize access="hasRole('BO_USER')">
+		   <script type="text/javascript">
+				$(document).ready(function()  {
+					$.ajax({
+					    type: 'GET',
+					    url:  "${pageContext.request.contextPath}/dipendente/presentiMessaggiNonLetti",
+					    statusCode: {
+					        200: function(responseObject, textStatus, jqXHR) {
+					        	$('#messaggiNonLettiModal').modal('show');
+					        },  
+						    204: function(responseObject, textStatus, jqXHR) {
+					        	// no content quindi non faccio nulla
+					        }  
+					    }
+					});
+				});
+			</script>
+		</sec:authorize>
+	   
 	 </head>
 	   <body class="d-flex flex-column h-100">
 	   		
@@ -63,6 +83,7 @@
 				        <h1 class="display-5 fw-bold">Benvenuto alla Gestione dei permessi</h1>
 				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/dipendente/search">Gestione Dipendenti</a>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/dipendente/searchMessaggio">Ricerca messaggio</a>
 				      </div>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated() && hasRole('DIPENDENTE_USER')">
@@ -121,5 +142,27 @@
 			
 			<!-- Footer -->
 			<jsp:include page="./footer.jsp" />
+			
+			<!-- Modal -->
+			<div class="modal fade" id="messaggiNonLettiModal" tabindex="-1"  aria-labelledby="messaggiNonLettiModalLabel"
+			    aria-hidden="true">
+			    <div class="modal-dialog" >
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title" id="messaggiNonLettiModalLabel">Info presenza messaggi</h5>
+			                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			            </div>
+			            <div class="modal-body">
+			                Sono presenti messaggi non letti. Accedere all'area messaggi?
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Torna in Pagina</button>
+			                <a href="${pageContext.request.contextPath }/dipendente/listNonLetti" class='btn btn-primary' >
+					            Continua
+					        </a>
+			            </div>
+			        </div>
+			    </div>
+			</div>
 	  </body>
 </html>

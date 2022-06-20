@@ -20,13 +20,13 @@ import it.prova.gestionepermessi.service.UtenteService;
 public class ResetPasswordController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private UtenteService utenteService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordencoder;
-	
+
 	@GetMapping("/resetform")
 	public String reset() {
 		return "resetpassword";
@@ -34,31 +34,30 @@ public class ResetPasswordController {
 
 	@RequestMapping(value = "/confirmResetPassword", method = { RequestMethod.POST })
 	public String confirmResetPassword(@RequestParam(value = "vecchiaPassword", required = true) String vecchiaPassword,
-			@RequestParam(value = "nuovaPassword",required = true) String nuovaPassword, @RequestParam(value = "confermaNPassword",required = true) String confermaNPassword,
+			@RequestParam(value = "nuovaPassword", required = true) String nuovaPassword,
+			@RequestParam(value = "confermaNPassword", required = true) String confermaNPassword,
 			RedirectAttributes redirectAttrs) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null) {
 			redirectAttrs.addFlashAttribute("errorMessage", "Errore generale");
 			return "index";
 		}
-		
-		
+
 		Utente utente = utenteService.findByUsername(auth.getName());
 		if (utente == null || !(passwordEncoder.matches(utente.getPassword(), vecchiaPassword))) {
 			redirectAttrs.addFlashAttribute("errorMessage", "La nuova password e'uguale alla vecchia");
 			return "index";
 		}
-		
+
 		if (nuovaPassword.equals(confermaNPassword)) {
 			utente.setPassword(passwordEncoder.encode(nuovaPassword));
 			utenteService.aggiorna(utente);
-		}
-		else {
+		} else {
 			redirectAttrs.addFlashAttribute("errorMessage", "La nuova password e la conferma non combaciano");
 			return "index";
 		}
-		
+
 		return "redirect:/logout";
 	}
-	
+
 }

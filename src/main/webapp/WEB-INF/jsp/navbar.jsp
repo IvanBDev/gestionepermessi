@@ -32,7 +32,7 @@
 		        <div class="dropdown-menu" aria-labelledby="dropdown01">
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/insert">Inserisci Dipendente</a>
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/richiestaPermesso/search">Ricerca Permesso</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/gestioneMessaggi">Gestione Messaggi</a>
+		          <a class="dropdown-item" href="${pageContext.request.contextPath}/dipendente/searchMessaggio">Gestione Messaggi</a>
 		        </div>
 		      </li>
 		   </sec:authorize>

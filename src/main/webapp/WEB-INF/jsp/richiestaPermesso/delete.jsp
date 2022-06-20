@@ -73,9 +73,10 @@
 			    	<a href="${pageContext.request.contextPath}/richiestaPermesso/list" class='btn btn-outline-secondary' style='width:80px'>
 			           <i class='fa fa-chevron-left'></i> Back
 			        </a>
-			       <a href="${pageContext.request.contextPath }/richiestaPermesso/remove/${delete_richiesta_attr.id}" class='btn btn-danger' style='width:80px'>
-					    <i class='fa fa-chevron-left'></i> Delete
-					</a>
+			        <form method = "POST" action = "${pageContext.request.contextPath}/richiestaPermesso/remove">
+			        	<input type = "hidden" name = "idRichiestaPermesso" value = "${delete_richiesta_attr.id}">
+			        	<input type = "submit" value = "Elimina">
+			        </form>
 			    </div>
 			<!-- end card -->
 	

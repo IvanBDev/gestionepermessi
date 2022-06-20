@@ -138,13 +138,13 @@ public class RichiestaPermessoController {
 		return "richiestaPermesso/delete";
 	}
 	
-	@GetMapping("/remove/{idRichiestaPermesso}")
-	public String remove(@PathVariable(required = true) Long idRichiestaPermesso, RedirectAttributes redirectAttrs, Model model) {
+	@PostMapping("/remove")
+	public String remove(@RequestParam(required = true) Long idRichiestaPermesso, RedirectAttributes redirectAttrs, Model model) {
 		
 		richiestaPermessoService.rimuoviTramiteId(idRichiestaPermesso);
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-		return "redirect:/richiestaPeresso/list";
+		return "richiestaPeresso/list";
 	}
 
 }
